@@ -52,8 +52,6 @@ namespace MdnsNet
             }
         }
 
-
-
         public short TransactionID { get; private set; }
         public short QuestionCount { get; private set; }
         public List<QueryQuestion> Questions { get; private set; }
@@ -68,6 +66,46 @@ namespace MdnsNet
                 builder.AppendLine(question.ToString());
             }
             return builder.ToString();
+        }
+
+
+        private static Random _rnd = new Random();
+        public static byte[] Create(string serviceName)
+        {
+            using (var ms = new MemoryStream())
+            using (var writer = new BinaryWriter(ms))
+            {
+                // Generate a new Transaction ID
+                byte[] transactionID = new byte[2];
+                _rnd.NextBytes(transactionID);
+                writer.Write(transactionID, 0, 2);
+
+                // Write the DNS flags (0x00, 0x00)
+                writer.Write(new byte[2] { 0x00, 0x00 }, 0, 2);
+
+                // We are asking one question
+                writer.Write(new byte[2] { 0x00, 0x01 }, 0, 2);
+
+                // Nothing else
+                writer.Write(new byte[6] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, 0, 6);
+
+                // Build the domain name
+                var domain = new DomainName(serviceName + ".local");
+                var domBytes = domain.ToBytes();
+                writer.Write(domBytes, 0, domBytes.Length);
+                writer.Write(new byte[2] { 0x00, 0x00 }, 0, 2);
+
+                // We are asking for the PTR
+                byte[] ptrBytes = BitConverter.GetBytes((short)DnsRecordType.PTR);
+                writer.Write(new byte[2] { ptrBytes[1], ptrBytes[0] }, 0, 2);
+
+                // Internet Class
+                writer.Write(new byte[2] { 0x00, 0x01 }, 0, 2);
+
+
+                writer.Flush();
+                return ms.ToArray();
+            }
         }
     }
 }

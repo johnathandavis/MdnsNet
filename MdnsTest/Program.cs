@@ -22,7 +22,6 @@ namespace MdnsTest
             record.TxtRecords.Add("pass", "Testing12345");
             record.TxtRecords.Add("dom", "hockaday.org");
 
-
             listener.ResolverDatabase.Add("_googlecast._tcp.local", record);
             
 
@@ -31,8 +30,11 @@ namespace MdnsTest
             System.Threading.Thread.Sleep(500);
             
             
-            Tmds.MDns.ServiceBrowser browser = new Tmds.MDns.ServiceBrowser();
-            browser.StartBrowse("_googlecast._tcp");
+            var client = new MdnsNet.MdnsClient();
+            var response = client.Query("_googlecast._tcp").Result;
+            Console.WriteLine(response.Domain);
+            Console.WriteLine(response.Name);
+
             Console.WriteLine("Query Sent.");
             Console.WriteLine("Press any key to exit...");
             Console.ReadKey();

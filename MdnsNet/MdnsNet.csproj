@@ -42,6 +42,7 @@
     <Compile Include="DnsClass.cs" />
     <Compile Include="DnsRecordType.cs" />
     <Compile Include="DomainName.cs" />
+    <Compile Include="MdnsClient.cs" />
     <Compile Include="MdnsQuery.cs" />
     <Compile Include="MdnsListener.cs" />
     <Compile Include="MdnsRecord.cs" />

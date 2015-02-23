@@ -10,8 +10,9 @@ namespace MdnsNet
     public class MdnsListener
     {
         public const int MDNS_PORT = 5353;
+        public const string MDNS_IP = "224.0.0.251";
 
-        private IPAddress _ip = IPAddress.Parse("224.0.0.251");
+        private IPAddress _ip = IPAddress.Parse(MDNS_IP);
         private IPEndPoint _endpoint = new IPEndPoint(IPAddress.Any, MDNS_PORT);
         private UdpClient _client;
         private Thread _listenThread;
@@ -55,6 +56,12 @@ namespace MdnsNet
 
             // Try the polite way of exiting the thread
             _keepListening = false;
+
+            try
+            {
+                _client.Close();
+            }
+            catch { }
 
             // Force close it
             try

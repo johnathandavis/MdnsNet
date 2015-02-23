@@ -22,6 +22,130 @@ namespace MdnsNet
             this.Port = port;
             this.IP = ip;
         }
+        public MdnsRecord(byte[] data)
+        {
+            using (var ms = new MemoryStream(data))
+            using (var reader = new BinaryReader(ms))
+            {
+                // We don't care about the transaction ID and flags
+                reader.ReadBytes(6);
+
+                // How many responses?
+                byte[] resBytes = reader.ReadBytes(2);
+                short responseCount = BitConverter.ToInt16(new byte[2] { resBytes[1], resBytes[0] }, 0);
+
+                // NO Authority RRs
+                reader.ReadBytes(2);
+
+                // How many extra responses?
+                byte[] extraBytes = reader.ReadBytes(2);
+                short extraCount = BitConverter.ToInt16(new byte[2] { extraBytes[1], extraBytes[0] }, 0);
+
+                if (responseCount != 1 && extraCount != 3) throw new Exception("Invalid MdnsRecord.");
+
+                var domain = new DomainName(reader);
+                this.Domain = domain.Name;
+
+                // This should be a PTR
+                byte[] answer1typeBytes = reader.ReadBytes(2);
+                DnsRecordType answer1type = (DnsRecordType)BitConverter.ToInt16(new byte[2] { answer1typeBytes[1], answer1typeBytes[0] }, 0);
+
+                // Read the Class
+                reader.ReadBytes(2);
+
+                // Read the TTL
+                reader.ReadBytes(4);
+
+                // Data length
+                byte[] answer1lengthBytes = reader.ReadBytes(2);
+                short answer1length = BitConverter.ToInt16(new byte[2] { answer1lengthBytes[1], answer1lengthBytes[0] }, 0);
+
+                List<string> domainNameParts = new List<string>();
+
+                short nameReadLength = 0;
+                // Read the domain
+                byte[] domainNameBytes = reader.ReadBytes(answer1length);
+                using (var domainMS = new MemoryStream(domainNameBytes))
+                using (var dom = new BinaryReader(domainMS))
+                {
+                    byte len = 1;
+                    while (len != 0)
+                    {
+                        len = dom.ReadByte();
+                        nameReadLength++;
+
+                        if (len == 0) break;
+                        domainNameParts.Add(Encoding.ASCII.GetString(dom.ReadBytes(len)));
+
+                        nameReadLength+=len;
+                    }
+                }
+
+                this.Name = domainNameParts[0];
+
+
+
+                // Read the TXT record
+                byte tlen = 1;
+                while (true)
+                {
+                    tlen = reader.ReadByte();
+                    if (tlen == 0) break;
+                    reader.ReadBytes(tlen);
+                }
+
+                // Read TXT
+                reader.ReadBytes(8);
+
+
+                byte[] txtLengthBytes = reader.ReadBytes(2);
+                short txtLen = BitConverter.ToInt16(new byte[2] { txtLengthBytes[1], txtLengthBytes[0] }, 0);
+
+                byte[] txtBytes = reader.ReadBytes(txtLen);
+
+                TxtRecords = new Dictionary<string, string>();
+
+                using (var txtMs = new MemoryStream(txtBytes))
+                using (var txtReader = new BinaryReader(txtMs))
+                {
+                    short read = 0;
+                    while (read < txtLen)
+                    {
+                        byte myLen = txtReader.ReadByte();
+                        read += (short)(myLen + 1);
+                        string txt = Encoding.ASCII.GetString(txtReader.ReadBytes(myLen));
+                        TxtRecords.Add(txt.Split('=')[0], txt.Split('=')[1]);
+                    }
+                }
+
+                // Read the SRV part
+                reader.ReadBytes(nameReadLength);
+
+
+                // Skip SRV, TTL, Class
+                reader.ReadBytes(8);
+
+                byte[] srvLenBytes = reader.ReadBytes(2);
+                short srvLength = BitConverter.ToInt16(new byte[2] { srvLenBytes[1], srvLenBytes[0] }, 0);
+
+                byte[] priorityBytes = reader.ReadBytes(2);
+                this.Priority = BitConverter.ToInt16(new byte[2] { priorityBytes[1], priorityBytes[0] }, 0);
+
+                byte[] weightBytes = reader.ReadBytes(2);
+                this.Weight = BitConverter.ToInt16(new byte[2] { weightBytes[1], weightBytes[0] }, 0);
+
+                byte[] portBytes = reader.ReadBytes(2);
+                this.Port = BitConverter.ToInt16(new byte[2] { portBytes[1], portBytes[0] }, 0);
+
+                reader.ReadBytes(srvLength - 6);
+
+                // Read A record
+                reader.ReadBytes(srvLength - 6);
+                reader.ReadBytes(10);
+
+                this.IP = new IPAddress(reader.ReadBytes(4));
+            }
+        }
 
         public string Domain { get; set; }
         public string Name { get; set; }

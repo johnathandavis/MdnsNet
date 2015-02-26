@@ -156,6 +156,17 @@ namespace MdnsNet
         public int TTL { get; set; }
         public Dictionary<string, string> TxtRecords { get; set; }
 
+        public override string ToString()
+        {
+            StringBuilder builder = new StringBuilder();
+            builder.AppendLine(Name + " (PR=" + Priority + ", W=" + Weight + ", IP=" + IP.ToString() + ", PORT=" + Port + ")");
+            foreach (var pair in TxtRecords)
+            {
+                builder.AppendLine(pair.Key + " = " + pair.Value);
+            }
+            return builder.ToString();
+        }
+
         public byte[] ToPayload()
         {
             using (var ms = new MemoryStream())

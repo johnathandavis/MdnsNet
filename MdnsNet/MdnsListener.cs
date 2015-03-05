@@ -27,6 +27,13 @@ namespace MdnsNet
             _client.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
         }
 
+        public MdnsListener(IPAddress ip, int port)
+        {
+            _endpoint = new IPEndPoint(ip, port);
+            _client = new UdpClient();
+            _client.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
+        }
+
         public void Start()
         {
             if (_hasStarted) throw new InvalidOperationException("To start the MDNS Server, it must first be in the \"stopped\" state.");
@@ -92,7 +99,7 @@ namespace MdnsNet
             {
                 try
                 {
-                    var tEndpoint = new IPEndPoint(IPAddress.Any, MDNS_PORT);
+                    var tEndpoint = new IPEndPoint(_endpoint.Address, _endpoint.Port);
                     byte[] msg = _client.Receive(ref tEndpoint);
 
                     

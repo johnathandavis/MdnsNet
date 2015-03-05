@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 using System.Collections.Concurrent;
 
 namespace MdnsNet
@@ -38,18 +39,91 @@ namespace MdnsNet
             return _client;
         }
 
-        public async Task<MdnsRecord> Query(string serviceName)
+        public List<MdnsRecord> QueryAll(string serviceName, int timeout)
+        {
+            byte[] payload = MdnsQuery.Create(serviceName);
+            var _client = CreateClient();
+
+
+            List<MdnsRecord> records = new List<MdnsRecord>();
+            bool KeepSearching = true;
+            var now = DateTime.Now;
+
+            var queryThread = new System.Threading.Thread(() =>
+            {
+                _client.Send(payload, payload.Length, new IPEndPoint(IPAddress.Parse(MdnsListener.MDNS_IP), MdnsListener.MDNS_PORT));
+
+                while (KeepSearching)
+                {
+                    try
+                    {
+                        var endpoint = new IPEndPoint(IPAddress.Any, MdnsListener.MDNS_PORT);
+                        byte[] recData = _client.Receive(ref endpoint);
+                        var record = new MdnsRecord(recData);
+                        if (record.Domain.Replace(".local", "") == serviceName)
+                        {
+                            records.Add(record);
+                        } 
+                    }
+                    catch { }
+                }
+            });
+
+            queryThread.Start();
+
+            while ((DateTime.Now - now).TotalSeconds < timeout);
+
+            try
+            {
+                queryThread.Abort();
+                queryThread = null;
+            }
+            catch {}
+            return new List<MdnsRecord>(records);
+        }
+
+        public MdnsRecord Query(string serviceName)
         {
             byte[] data = MdnsQuery.Create(serviceName);
 
             var _client = CreateClient();
+            MdnsRecord rec = null;
+            bool worked = false;
             _client.Send(data, data.Length, new IPEndPoint(IPAddress.Parse(MdnsListener.MDNS_IP), MdnsListener.MDNS_PORT));
+
+            while (!worked)
+            {
+                try
+                {
+                    var endpoint = new IPEndPoint(IPAddress.Any, MdnsListener.MDNS_PORT);
+                    byte[] qData = _client.Receive(ref endpoint);
+                    var record = new MdnsRecord(qData);
+                    if (record.Domain.Replace(".local", "") == serviceName)
+                    {
+                        rec = record;
+                        worked = true;
+                    }
+                }
+                catch { }
+            }
+            return rec;
+        }
+
+        public async Task<MdnsRecord> QueryAsync(string serviceName)
+        {
+            byte[] data = MdnsQuery.Create(serviceName);
+
+            var _client = CreateClient();
+            
 
             MdnsRecord rec = null;
 
             await Task.Factory.StartNew(() =>
                 {
+                    
                     bool worked = false;
+                    _client.Send(data, data.Length, new IPEndPoint(IPAddress.Parse(MdnsListener.MDNS_IP), MdnsListener.MDNS_PORT));
+                    DateTime now = DateTime.Now;
                     while (!worked)
                     {
                         try

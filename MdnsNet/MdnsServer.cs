@@ -4,6 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using System.Net;
+using System.Net.Sockets;
+
 namespace MdnsNet
 {
     public class MdnsServer
@@ -12,6 +15,12 @@ namespace MdnsNet
         {
             this.ResolverDatabase = new Dictionary<string, MdnsRecord>();
             this.Listener = new MdnsListener();
+            this.Listener.QueryReceived += Listener_QueryReceived;
+        }
+        public MdnsServer(IPAddress ip, int port)
+        {
+            this.ResolverDatabase = new Dictionary<string, MdnsRecord>();
+            this.Listener = new MdnsListener(ip, port);
             this.Listener.QueryReceived += Listener_QueryReceived;
         }
 

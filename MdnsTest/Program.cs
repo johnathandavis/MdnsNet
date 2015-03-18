@@ -31,7 +31,7 @@ namespace MdnsTest
             
             
             var client = new MdnsNet.MdnsClient();
-            var response = client.Query("_googlecast._tcp").Result;
+            var response = client.Query("_googlecast._tcp");
             Console.WriteLine(response.Domain);
             Console.WriteLine(response.Name);
 

@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MdnsNet", "MdnsNet\MdnsNet.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MdnsTest", "MdnsTest\MdnsTest.csproj", "{670326E2-00A2-4E74-9A4B-8A67B471AD15}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ManagementSnapin", "ManagementSnapin\ManagementSnapin.csproj", "{DAC4A072-8DB3-4D5C-A3B4-581FE0C899FB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{670326E2-00A2-4E74-9A4B-8A67B471AD15}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{670326E2-00A2-4E74-9A4B-8A67B471AD15}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{670326E2-00A2-4E74-9A4B-8A67B471AD15}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DAC4A072-8DB3-4D5C-A3B4-581FE0C899FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DAC4A072-8DB3-4D5C-A3B4-581FE0C899FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DAC4A072-8DB3-4D5C-A3B4-581FE0C899FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DAC4A072-8DB3-4D5C-A3B4-581FE0C899FB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

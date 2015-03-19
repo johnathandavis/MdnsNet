@@ -16,16 +16,7 @@ namespace ManagementSnapin
 
         public Snapin()
         {
-            this.RootNode = CreateRootNode();
-        }
-
-        private ScopeNode CreateRootNode()
-        {
-            var node = new ScopeNode();
-            node.DisplayName = "MDNS Server";
-
-
-            return node;
+            this.RootNode = new Nodes.RootNode();            
         }
     }
 }

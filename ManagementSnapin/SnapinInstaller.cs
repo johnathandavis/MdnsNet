@@ -8,6 +8,9 @@ namespace ManagementSnapin
     [RunInstaller(true)]
     public class SnapinInstaller : SnapInInstaller
     {
-        
+        public SnapinInstaller()
+        {
+            
+        }
     }
 }

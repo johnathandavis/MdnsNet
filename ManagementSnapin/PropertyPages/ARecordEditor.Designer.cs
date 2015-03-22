@@ -28,33 +28,19 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(40, 52);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(144, 25);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Edit A Record";
             // 
             // ARecordEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.label1);
             this.Name = "ARecordEditor";
-            this.Size = new System.Drawing.Size(569, 478);
+            this.Size = new System.Drawing.Size(300, 400);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Label label1;
     }
 }

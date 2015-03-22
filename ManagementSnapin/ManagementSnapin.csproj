@@ -102,6 +102,15 @@
     <EmbeddedResource Include="PropertyPages\ARecordEditor.resx">
       <DependentUpon>ARecordEditor.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="PropertyPages\GeneralEditor.resx">
+      <DependentUpon>GeneralEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PropertyPages\SrvEditor.resx">
+      <DependentUpon>SrvEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PropertyPages\TxtEditor.resx">
+      <DependentUpon>TxtEditor.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

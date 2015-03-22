@@ -7,7 +7,7 @@ using System.Diagnostics;
 
 using System.Net;
 
-namespace ArchClassLib.HTTP
+namespace Server.HTTP
 {
     public class PortFinder
     {

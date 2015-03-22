@@ -8,7 +8,7 @@ using System.IO;
 using System.Net;
 using System.Net.Sockets;
 
-namespace ArchClassLib.HTTP
+namespace Server.HTTP
 {
     public class HttpRequest
     {

@@ -14,7 +14,7 @@ using System.Security;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 
-namespace ArchClassLib.HTTP
+namespace Server.HTTP
 {
     public class SimpleWebServer
     {

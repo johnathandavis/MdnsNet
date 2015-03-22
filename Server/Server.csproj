@@ -62,6 +62,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="HTTP\HttpMessageType.cs" />
+    <Compile Include="HTTP\HttpRequest.cs" />
+    <Compile Include="HTTP\HttpResponse.cs" />
+    <Compile Include="HTTP\HttpStatusCode.cs" />
+    <Compile Include="HTTP\PortFinder.cs" />
+    <Compile Include="HTTP\SimpleWebServer.cs" />
     <Compile Include="MulticastServer.cs">
       <SubType>Component</SubType>
     </Compile>

@@ -105,8 +105,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>C:\Windows\Microsoft.NET\Framework64\v4.0.30319\InstallUtil.exe /u "C:\Users\Administrator\Source\Repos\MdnsNet\ManagementSnapin\bin\x64\Debug\ManagementSnapin.dll"
-C:\Windows\Microsoft.NET\Framework64\v4.0.30319\InstallUtil.exe "C:\Users\Administrator\Source\Repos\MdnsNet\ManagementSnapin\bin\x64\Debug\ManagementSnapin.dll"</PostBuildEvent>
+    <PostBuildEvent>C:\Windows\Microsoft.NET\Framework64\v4.0.30319\InstallUtil.exe /u %25USERPROFILE%25\Source\Repos\MdnsNet\ManagementSnapin\bin\x64\Debug\ManagementSnapin.dll
+C:\Windows\Microsoft.NET\Framework64\v4.0.30319\InstallUtil.exe %25USERPROFILE%25\Source\Repos\MdnsNet\ManagementSnapin\bin\x64\Debug\ManagementSnapin.dll</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

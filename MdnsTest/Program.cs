@@ -23,22 +23,9 @@ namespace MdnsTest
             record.TxtRecords.Add("dom", "hockaday.org");
 
             listener.ResolverDatabase.Add("_googlecast._tcp.local", record);
-            
 
-            Console.WriteLine("MDNS Server is listening...");
-
-            System.Threading.Thread.Sleep(500);
-            
-            
-            var client = new MdnsNet.MdnsClient();
-            var response = client.Query("_googlecast._tcp");
-            Console.WriteLine(response.Domain);
-            Console.WriteLine(response.Name);
-
-            Console.WriteLine("Query Sent.");
             Console.WriteLine("Press any key to exit...");
             Console.ReadKey();
-
             listener.Stop();
         }
 

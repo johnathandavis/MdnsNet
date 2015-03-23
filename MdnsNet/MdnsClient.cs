@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Collections.Concurrent;
 
+using MdnsNet.MDNS;
+using MdnsNet.Server;
+
 namespace MdnsNet
 {
     public class MdnsClient

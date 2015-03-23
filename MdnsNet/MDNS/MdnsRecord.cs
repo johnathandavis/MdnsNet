@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 using System.Net;
 using System.IO;
 
-namespace MdnsNet
+namespace MdnsNet.MDNS
 {
     public class MdnsRecord
     {
+        public MdnsRecord() { }
         public MdnsRecord(string domain, string name, short port, IPAddress ip)
         {
             TxtRecords = new Dictionary<string, string>();
@@ -43,12 +44,12 @@ namespace MdnsNet
 
                 if (responseCount != 1 && extraCount != 3) throw new Exception("Invalid MdnsRecord.");
 
-                var domain = new DomainName(reader);
+                var domain = new DNS.DomainName(reader);
                 this.Domain = domain.Name;
 
                 // This should be a PTR
                 byte[] answer1typeBytes = reader.ReadBytes(2);
-                DnsRecordType answer1type = (DnsRecordType)BitConverter.ToInt16(new byte[2] { answer1typeBytes[1], answer1typeBytes[0] }, 0);
+                DNS.DnsRecordType answer1type = (DNS.DnsRecordType)BitConverter.ToInt16(new byte[2] { answer1typeBytes[1], answer1typeBytes[0] }, 0);
 
                 // Read the Class
                 reader.ReadBytes(2);
@@ -214,7 +215,7 @@ namespace MdnsNet
             using (var ms = new MemoryStream())
             using (var writer = new BinaryWriter(ms))
             {
-                var domName = new DomainName(Domain);
+                var domName = new DNS.DomainName(Domain);
                 var domNameBytes = domName.ToBytes();
                 writer.Write(domNameBytes, 0, domNameBytes.Length);
                 writer.Write((byte)0);
@@ -228,7 +229,7 @@ namespace MdnsNet
                 writer.Write(newTTL, 0, 4);
 
                 // Name
-                var myName = new DomainName(this.Name);
+                var myName = new DNS.DomainName(this.Name);
                 byte[] myNameBytes = myName.ToBytes();
                 short len = (short)(myNameBytes.Length+1);
                 byte[] lenBytes = BitConverter.GetBytes(len);
@@ -248,7 +249,7 @@ namespace MdnsNet
             using (var writer = new BinaryWriter(ms))
             {
                 // Write my name
-                var myName = new DomainName(Name);
+                var myName = new DNS.DomainName(Name);
                 var myNameBytes = myName.ToBytes();
                 writer.Write(myNameBytes, 0, myNameBytes.Length);
                 writer.Write((byte)0);
@@ -290,7 +291,7 @@ namespace MdnsNet
             using (var writer = new BinaryWriter(ms))
             {
                 // Write my name
-                var myName = new DomainName(Name);
+                var myName = new DNS.DomainName(Name);
                 var myNameBytes = myName.ToBytes();
                 writer.Write(myNameBytes, 0, myNameBytes.Length);
                 writer.Write((byte)0);
@@ -304,7 +305,7 @@ namespace MdnsNet
                 writer.Write(newTTL, 0, 4);
 
 
-                var modName = new DomainName(Name.Split('.')[0] + ".local");
+                var modName = new DNS.DomainName(Name.Split('.')[0] + ".local");
                 var modNameBytes = modName.ToBytes();
 
                 // Write the data length
@@ -338,7 +339,7 @@ namespace MdnsNet
             using (var writer = new BinaryWriter(ms))
             {
                 // Write the service name
-                var modName = new DomainName(Name.Split('.')[0] + ".local");
+                var modName = new DNS.DomainName(Name.Split('.')[0] + ".local");
                 var modNameBytes = modName.ToBytes();
                 writer.Write(modNameBytes, 0, modNameBytes.Length);
                 writer.Write((byte)0);

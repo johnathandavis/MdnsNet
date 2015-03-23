@@ -5,7 +5,11 @@ using System.Threading;
 using System.Net;
 using System.Net.Sockets;
 
-namespace MdnsNet
+using MdnsNet.DNS;
+using MdnsNet.MDNS;
+
+
+namespace MdnsNet.Server
 {
     public class MdnsListener
     {

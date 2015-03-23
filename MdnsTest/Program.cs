@@ -49,7 +49,7 @@ namespace MdnsTest
                 return;
             }
 
-            var record = new MdnsNet.MdnsRecord(serviceName, name, port, myip);
+            var record = new MdnsNet.MDNS.MdnsRecord(serviceName, name, port, myip);
 
             Console.WriteLine("Enter any TXT records you want (press enter for a new one, blank when done):");
             Console.WriteLine("For example: myname=John");
@@ -83,7 +83,7 @@ namespace MdnsTest
             Console.WriteLine();
             Console.WriteLine("Starting MDNS Server on " + myip.ToString());
 
-            var listener = new MdnsNet.MdnsServer();
+            var listener = new MdnsNet.Server.MdnsServer();
             listener.ResolverDatabase.Add(record.Domain + ".local", record);
             listener.Start();
 

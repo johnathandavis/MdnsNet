@@ -60,10 +60,20 @@ namespace Server.HTTP
                 writer.WriteLine("Connection: close");
                 writer.WriteLine("Server: Recon/HttpServer 1.0");
                 writer.WriteLine("Content-Type: " + ContentType);
-                writer.WriteLine("Content-Length: " + Content.Length);
-                writer.WriteLine();
+
+                if (Content == null)
+                {
+                    writer.WriteLine("Content-Length: 0");
+                }
+                else
+                {
+                    writer.WriteLine("Content-Length: " + Content.Length);
+                    writer.WriteLine();
+                }
                 writer.Flush();
                 byte[] header = ms.ToArray();
+
+                if (Content == null) return header;
                 byte[] data = Content;
                 byte[] concated = header.Concat(data).ToArray();
                 return concated;

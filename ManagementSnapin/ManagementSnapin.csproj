@@ -97,7 +97,12 @@
       <SubType>Component</SubType>
     </Compile>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\MdnsNet\MdnsNet.csproj">
+      <Project>{86610cf6-6a5f-4d76-b67d-d9b49b5fd7ba}</Project>
+      <Name>MdnsNet</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="PropertyPages\ARecordEditor.resx">
       <DependentUpon>ARecordEditor.cs</DependentUpon>

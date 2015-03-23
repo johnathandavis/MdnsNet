@@ -8,11 +8,14 @@ using System.Threading.Tasks;
 
 using Microsoft.ManagementConsole;
 
+
+using MdnsNet;
+
 namespace ManagementSnapin.Nodes
 {
     public class RecordsNode : ScopeNode
     {
-        public RecordsNode()
+        public RecordsNode(ManagementClient client)
         {
             this.DisplayName = "Records";
 
@@ -20,6 +23,7 @@ namespace ManagementSnapin.Nodes
             lvd.DisplayName = "Records";
             lvd.ViewType = typeof(RecordMmcListView);
             lvd.Options = MmcListViewOptions.ExcludeScopeNodes;
+            lvd.Tag = client;
 
             this.ViewDescriptions.Add(lvd);
             this.ViewDescriptions.DefaultIndex = 0;

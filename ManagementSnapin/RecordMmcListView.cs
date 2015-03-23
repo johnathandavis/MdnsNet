@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using System.Security.Permissions;
 
 using Microsoft.ManagementConsole;
+using MdnsNet;
 
 namespace ManagementSnapin
 {
@@ -11,7 +12,15 @@ namespace ManagementSnapin
     {
         public RecordMmcListView()
         {
+            
+        }
 
+        public ManagementClient Client
+        {
+            get
+            {
+                return (ManagementClient)this.ViewDescriptionTag;
+            }
         }
 
         protected override void OnInitialize(AsyncStatus status)
@@ -21,13 +30,13 @@ namespace ManagementSnapin
 
             // Create a set of columns for use in the list view
             // Define the default column title
-            this.Columns[0].Title = "Name";
-            this.Columns[0].SetWidth(300);
+            this.Columns[0].Title = "Domain";
+            this.Columns[0].SetWidth(200);
 
+            this.Columns.Add(new MmcListViewColumn("Name", 350));
             this.Columns.Add(new MmcListViewColumn("IP", 200));
             this.Columns.Add(new MmcListViewColumn("Port", 50));
             this.Columns.Add(new MmcListViewColumn("TXT Count", 75));
-            this.Columns.Add(new MmcListViewColumn("Description"));
             this.Mode = MmcListViewMode.Report;  // default (set for clarity)
 
             // Set to show refresh as an option
@@ -62,9 +71,6 @@ namespace ManagementSnapin
         }
 
 
-        protected override void OnRefresh(AsyncStatus status)
-        {
-        }
 
         /// <summary>
         /// Shows selected items.
@@ -93,17 +99,17 @@ namespace ManagementSnapin
             this.ResultNodes.Clear();
 
             // Use fictitious data to populate the lists.
-            string[][] users = { new string[] {"Arch Paradigm", "172.16.1.29", "1138", "4", "The Arch Paradigm Server"} };
+            var records = Client.GetAllRecords();
 
             // Populate the list.
-            foreach (string[] user in users)
+            foreach (var record in records)
             {
                 ResultNode node = new ResultNode();
-                node.DisplayName = user[0];
-                node.SubItemDisplayNames.Add(user[1]);
-                node.SubItemDisplayNames.Add(user[2]);
-                node.SubItemDisplayNames.Add(user[3]);
-                node.SubItemDisplayNames.Add(user[4]);
+                node.DisplayName = record.Domain;
+                node.SubItemDisplayNames.Add(record.Name);
+                node.SubItemDisplayNames.Add(record.IP.ToString());
+                node.SubItemDisplayNames.Add(record.Port.ToString());
+                node.SubItemDisplayNames.Add(record.TxtRecords.Count.ToString());
 
                 this.ResultNodes.Add(node);
             }

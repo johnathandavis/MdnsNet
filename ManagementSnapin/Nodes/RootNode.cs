@@ -3,6 +3,8 @@ using System.ComponentModel;
 using System;
 using System.Security.Permissions;
 
+using MdnsNet;
+
 namespace ManagementSnapin.Nodes
 {
     public class RootNode : ScopeNode
@@ -11,8 +13,8 @@ namespace ManagementSnapin.Nodes
         {
             DisplayName = Snapin.SNAPIN_NAME;
 
-            
-            this.Children.Add(new Nodes.RecordsNode());
+            var client = new ManagementClient(Environment.MachineName);
+            this.Children.Add(new Nodes.RecordsNode(client));
         }
 
     }

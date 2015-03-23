@@ -4,7 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MdnsNet
+using MdnsNet.DNS;
+
+namespace MdnsNet.DNS
 {
     public class QueryQuestion
     {

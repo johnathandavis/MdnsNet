@@ -5,7 +5,9 @@ using System.IO;
 using System.Net;
 using System.Collections.Generic;
 
-namespace MdnsNet
+using MdnsNet.DNS;
+
+namespace MdnsNet.MDNS
 {
     public class MdnsQuery
     {

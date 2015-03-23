@@ -7,7 +7,9 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Net.Sockets;
 
-namespace MdnsNet
+using MdnsNet.MDNS;
+
+namespace MdnsNet.Server
 {
     public class MdnsServer
     {
@@ -26,12 +28,12 @@ namespace MdnsNet
 
         void Listener_QueryReceived(object sender, MdnsQuery query)
         {
-            foreach (QueryQuestion question in query.Questions)
+            foreach (MdnsNet.DNS.QueryQuestion question in query.Questions)
             {
                 string domain = question.Name.Name;
-                if (ResolverDatabase.ContainsKey(domain))
+                if (ResolverDatabase.ContainsKey(domain.Replace(".local", "")))
                 {
-                    this.Listener.SendResponse(query.RemoteEndpoint, ResolverDatabase[domain]);
+                    this.Listener.SendResponse(query.RemoteEndpoint, ResolverDatabase[domain.Replace(".local", "")]);
                 }
             }
         }

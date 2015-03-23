@@ -4,9 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MdnsModule
+namespace MdnsNet.DNS
 {
-    public class Class1
+    public enum DnsRecordType
     {
+        A = 1,
+        AAAA = 28,
+        PTR = 12,
     }
 }
